@@ -3,6 +3,8 @@
 #include <ranges>
 #include <iostream>
 #include <expected>
+#include <numeric>
+#include <vector>
 
 // expected<int, string>:
 //   - holds int (number) while unprocessed
@@ -41,13 +43,16 @@ auto cracklePop() -> void {
     auto results = std::views::iota(1, 101)
         | std::views::transform(cracklePopPipeline);
 
-    bool first = true;
-    for (const auto& s : results) {
-        if (!first) std::cout << ",";
-        std::cout << s;
-        first = false;
-    }
-    std::cout << "\n";
+    std::vector<std::string> vec(results.begin(), results.end());
+
+    auto joined = std::accumulate(
+        vec.begin() + 1,
+        vec.end(),
+        vec.front(),
+        [](const std::string& acc, const std::string& s) { return acc + "," + s; }
+    );
+
+    std::cout << joined << "\n";
 }
 
 int main() {
