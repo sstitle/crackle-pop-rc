@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.31)
+project(crackle_pop_rc)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS
+    ON
+    CACHE INTERNAL "")
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+  set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES
+      ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+endif()
+
+set(CMAKE_CXX_STANDARD 20)
+add_executable(main src/main.cpp)
