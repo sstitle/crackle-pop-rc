@@ -11,7 +11,6 @@ cmake -S . -B build -G Ninja
 cmake --build build
 ```
 
-
 ## run
 
 Build and run the main executable.

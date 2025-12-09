@@ -3,6 +3,8 @@
   projectRootFile = "flake.nix";
   programs = {
     # keep-sorted start
+    clang-format.enable = true;
+    cmake-format.enable = true;
     keep-sorted.enable = true;
     nixfmt.enable = true;
     # keep-sorted end

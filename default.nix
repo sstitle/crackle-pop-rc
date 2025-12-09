@@ -1,4 +1,6 @@
-{ pkgs ? import <nixpkgs> { } }:
+{
+  pkgs ? import <nixpkgs> { },
+}:
 
 pkgs.stdenv.mkDerivation {
   pname = "crackle-pop";
@@ -6,9 +8,12 @@ pkgs.stdenv.mkDerivation {
 
   src = pkgs.lib.cleanSourceWith {
     src = ./.;
-    filter = path: type:
-      let baseName = baseNameOf path;
-      in !(baseName == "build" || baseName == "result");
+    filter =
+      path: type:
+      let
+        baseName = baseNameOf path;
+      in
+      !(baseName == "build" || baseName == "result");
   };
 
   nativeBuildInputs = with pkgs; [
