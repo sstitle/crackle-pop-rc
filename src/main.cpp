@@ -11,9 +11,8 @@
 //   - holds string (result) once matched
 using CracklePopState = std::expected<int, std::string>;
 
-// A generic step to handle divisibility
-auto handle(int divisor, std::string_view text) {
-    return [=](int number) -> CracklePopState {
+auto handle(uint divisor, std::string_view text) {
+    return [=](uint number) -> CracklePopState {
         if (number % divisor == 0) {
             return std::unexpected(std::string(text));
         }
@@ -21,7 +20,6 @@ auto handle(int divisor, std::string_view text) {
     };
 }
 
-// Terminal: extract final result
 auto finish(CracklePopState state) -> std::string {
     if (state.has_value()) {
         return std::to_string(state.value());
@@ -29,7 +27,6 @@ auto finish(CracklePopState state) -> std::string {
     return state.error();
 }
 
-// The CracklePop pipeline with std::expected chaining
 auto cracklePopPipeline(int i) -> std::string {
     return finish(
         CracklePopState{i}
