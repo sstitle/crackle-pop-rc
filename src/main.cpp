@@ -1,3 +1,6 @@
+// This code is hosted on GitHub at:
+// https://github.com/sstitle/crackle-pop-rc
+
 #include <cstdlib>
 #include <expected>
 #include <iostream>
