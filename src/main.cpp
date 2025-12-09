@@ -1,8 +1,6 @@
-#include <array>
 #include <cstdlib>
 #include <expected>
 #include <iostream>
-#include <numeric>
 #include <ranges>
 #include <string>
 
@@ -11,7 +9,7 @@
 //   - holds string (result) once matched
 using CracklePopState = std::expected<int, std::string>;
 
-auto handle(uint divisor, std::string_view text) {
+constexpr auto handle(uint divisor, std::string_view text) {
   return [=](uint number) -> CracklePopState {
     if (number % divisor == 0) {
       return std::unexpected(std::string(text));
@@ -20,14 +18,14 @@ auto handle(uint divisor, std::string_view text) {
   };
 }
 
-auto finish(CracklePopState state) -> std::string {
+constexpr auto finish(CracklePopState state) -> std::string {
   if (state.has_value()) {
     return std::to_string(state.value());
   }
   return state.error();
 }
 
-auto cracklePopPipeline(int i) -> std::string {
+constexpr auto cracklePopPipeline(uint i) -> std::string {
   return finish(CracklePopState{i}
                     .and_then(handle(15, "CracklePop"))
                     .and_then(handle(3, "Crackle"))
@@ -37,19 +35,9 @@ auto cracklePopPipeline(int i) -> std::string {
 constexpr uint MAX_VALUE = 100;
 
 auto cracklePop() -> void {
-  auto results = std::views::iota(1U, MAX_VALUE + 1) |
-                 std::views::transform(cracklePopPipeline);
-
-  std::array<std::string, MAX_VALUE> arr;
-  std::ranges::copy(results, arr.begin());
-
-  auto joined =
-      std::accumulate(arr.begin() + 1, arr.end(), arr.front(),
-                      [](const std::string &acc, const std::string &s) {
-                        return acc + '\n' + s;
-                      });
-
-  std::cout << joined << '\n';
+  for (auto i : std::views::iota(1U, MAX_VALUE + 1)) {
+    std::cout << cracklePopPipeline(i) << '\n';
+  }
 }
 
 int main() {
