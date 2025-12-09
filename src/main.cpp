@@ -10,7 +10,7 @@
 // expected<int, string>:
 //   - holds int (number) while unprocessed
 //   - holds string (result) once matched
-using CracklePopState = std::expected<int, std::string>;
+using CracklePopState = std::expected<uint, std::string>;
 
 constexpr auto handle(uint divisor, std::string_view text) {
   return [=](uint number) -> CracklePopState {
