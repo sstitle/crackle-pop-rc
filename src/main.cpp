@@ -1,8 +1,8 @@
-#include <cstdint>
 #include <cstdlib>
-#include <iostream>
 #include <string>
 #include <sys/types.h>
+#include <ranges>
+#include <iostream>
 
 struct CracklePopData {
     uint input;
@@ -10,7 +10,7 @@ struct CracklePopData {
 };
 
 auto cracklePop() -> void {
-    for (uint i = 1; i < 100; i++) {
+    std::ranges::for_each(std::views::iota(1u, 101u), [](uint i) {
         if (i % 3 == 0 && i % 5 == 0) {
             std::cout << "CracklePop ";
         } else if (i % 3 == 0) {
@@ -20,7 +20,7 @@ auto cracklePop() -> void {
         } else {
             std::cout << i << " ";
         }
-    }
+    });
 }
 
 int main() {
