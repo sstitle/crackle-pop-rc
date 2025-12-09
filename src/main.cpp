@@ -4,7 +4,7 @@
 #include <iostream>
 #include <expected>
 #include <numeric>
-#include <vector>
+#include <array>
 
 // expected<int, string>:
 //   - holds int (number) while unprocessed
@@ -39,20 +39,23 @@ auto cracklePopPipeline(int i) -> std::string {
     );
 }
 
+constexpr uint MAX_VALUE = 100;
+
 auto cracklePop() -> void {
-    auto results = std::views::iota(1, 101)
+    auto results = std::views::iota(1U, MAX_VALUE + 1)
         | std::views::transform(cracklePopPipeline);
 
-    std::vector<std::string> vec(results.begin(), results.end());
+    std::array<std::string, MAX_VALUE> arr;
+    std::ranges::copy(results, arr.begin());
 
     auto joined = std::accumulate(
-        vec.begin() + 1,
-        vec.end(),
-        vec.front(),
-        [](const std::string& acc, const std::string& s) { return acc + "\n" + s; }
+        arr.begin() + 1,
+        arr.end(),
+        arr.front(),
+        [](const std::string& acc, const std::string& s) { return acc + '\n' + s; }
     );
 
-    std::cout << joined << "\n";
+    std::cout << joined << '\n';
 }
 
 int main() {
