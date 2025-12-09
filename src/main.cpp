@@ -1,38 +1,28 @@
 // This code is hosted on GitHub at:
 // https://github.com/sstitle/crackle-pop-rc
 
+#include <array>
 #include <cstdlib>
-#include <expected>
 #include <iostream>
+#include <numeric>
 #include <ranges>
 #include <string>
 
-// expected<int, string>:
-//   - holds int (number) while unprocessed
-//   - holds string (result) once matched
-using CracklePopState = std::expected<uint, std::string>;
+struct Rule {
+  uint divisor;
+  std::string_view text;
+};
 
-constexpr auto handle(uint divisor, std::string_view text) {
-  return [=](uint number) -> CracklePopState {
-    if (number % divisor == 0) {
-      return std::unexpected(std::string(text));
-    }
-    return number;
-  };
-}
+constexpr std::array<Rule, 2> rules = {{{3, "Crackle"}, {5, "Pop"}}};
 
-constexpr auto finish(CracklePopState state) -> std::string {
-  if (state.has_value()) {
-    return std::to_string(state.value());
-  }
-  return state.error();
-}
+auto cracklePopPipeline(uint i) -> std::string {
+  auto result = std::accumulate(
+      rules.begin(), rules.end(), std::string{},
+      [i](const std::string& acc, const Rule& rule) -> std::string {
+        return acc + (i % rule.divisor == 0 ? std::string(rule.text) : "");
+      });
 
-constexpr auto cracklePopPipeline(uint i) -> std::string {
-  return finish(CracklePopState{i}
-                    .and_then(handle(15, "CracklePop"))
-                    .and_then(handle(3, "Crackle"))
-                    .and_then(handle(5, "Pop")));
+  return result.empty() ? std::to_string(i) : result;
 }
 
 constexpr uint MAX_VALUE = 100;
