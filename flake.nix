@@ -28,8 +28,16 @@
         }:
         let
           treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
+          crackle-pop = import ./default.nix { inherit pkgs; };
         in
         {
+          packages.default = crackle-pop;
+          packages.crackle-pop = crackle-pop;
+
+          apps.default = {
+            type = "app";
+            program = "${crackle-pop}/bin/crackle-pop";
+          };
           # Development shell with nickel and mask
           devShells.default = pkgs.mkShell {
             buildInputs = with pkgs; [
@@ -41,6 +49,10 @@
               cmake
               clang
               ninja
+
+              # Nix tools
+              nixd
+              nil
             ];
 
             shellHook = ''

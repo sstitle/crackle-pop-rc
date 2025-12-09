@@ -49,7 +49,7 @@ auto cracklePop() -> void {
         vec.begin() + 1,
         vec.end(),
         vec.front(),
-        [](const std::string& acc, const std::string& s) { return acc + "," + s; }
+        [](const std::string& acc, const std::string& s) { return acc + "\n" + s; }
     );
 
     std::cout << joined << "\n";
